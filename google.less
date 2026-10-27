@@ -1,0 +1,60 @@
+// ================= 1. 保持双列网格布局与居中 =================
+body {
+  #center_col {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+  }
+  
+  #rso {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+    align-items: start !important;
+    padding: 20px 0 !important;
+  }
+
+  #rhs, .kp-wholepage {
+    display: contents !important;
+  }
+}
+
+// ================= 2. 绝对透明（彻底抹除所有原生色块） =================
+#rso * {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  outline: none !important;
+}
+
+// ================= 3. 核心：去掉外层边框，只保留放大特效 =================
+
+div.MjjYud, 
+div.g {
+  // 彻底去掉边框、圆角和内边距
+  border: none !important; 
+  border-radius: 0 !important;
+  padding: 0 !important; 
+  
+  // 添加过渡动画，让放大效果平滑自然
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  
+  // 让卡片在底层，放大时能盖住其他内容
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+// ================= 4. 鼠标悬停时的放大互动（无白框版） =================
+
+div.MjjYud:hover, 
+div.g:hover {
+  // 整体放大 1.03 倍
+  transform: scale(1.03) !important; 
+  
+  // 提高层级，防止被相邻卡片遮挡
+  z-index: 10 !important;
+  
+  // 添加极轻微的阴影，让放大的卡片和背景有一丝层次感
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
