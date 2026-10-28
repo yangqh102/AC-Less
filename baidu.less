@@ -1,6 +1,6 @@
 /* ================= 1. 全局容器与双列布局 ================= */
 body {
-  /* 隐藏多余的热搜和侧边推荐，保持页面纯净 */
+  /* 隐藏多余的热搜和侧边推荐 */
   .s-hotsearch-wrapper, .s-top-nav, .s-top-more, .opr-recommends-merge-wrapper { 
     display: none !important; 
   }
@@ -14,66 +14,47 @@ body {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(460px, 1fr)) !important;
   gap: 28px !important;
-  align-items: start !important;
-  padding: 30px 0 !important;
+  align-items: start !important; /* 顶部对齐 */
+  padding: 10px 0 !important;
 }
 
-/* 彻底隐藏右侧栏、底部推荐及悬浮元素 */
+/* 彻底隐藏右侧栏 */
 #content_right, #content_bottom, .side-nav, .opr-recommends-merge-content {
   display: none !important;
 }
 
-/* ================= 2. 深度透明化（融合二次元背景） ================= */
-
-/* 针对所有卡片基础容器去除背景色 */
-div.c-container, div.result, div.c-card, div.c-wrapper, div.new-pmd, div.result-op {
-  background: transparent !important;
-  background-color: transparent !important;
-  backdrop-filter: none !important;
-}
-
-/* 强制百度AI总结框及特殊结果框透明 */
-div.c-op-pc-container, div.c-op-pc-container *, div.c-pc-result {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #333 !important;
-  border: none !important;
-}
-
-/* 强制内部小块（如“大家还在搜”）完全透明 */
-.opr-recommends-merge-panel, .opr-recommends-merge-panel *,
-.c-gap-inner, .c-gap-inner *, .c-blocka, .c-blocka * {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border-color: transparent !important;
-}
-
-/* 深度穿透：强制所有层级元素的背景色变为透明 */
+/* ================= 2. 深度透明化 ================= */
+div.c-container, div.result, div.c-card, div.c-wrapper, div.new-pmd, div.result-op,
 .c-container *, .result *, .c-card *, .c-wrapper *, .c-op-pc-container * {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
 
-/* ================= 3. 核心卡片样式：无边框变色，仅放大与半透明边框 ================= */
-div.c-container, div.result, div.result-op, div.c-card {
-  /* 极细的半透明白色边框，完美融入浅色/动漫背景 */
-  border: 1px solid rgba(255, 255, 255, 0.5) !important; 
-  border-radius: 12px !important;
-  max-width: 100% !important;
-  padding: 18px 20px !important;
-  box-sizing: border-box !important;
-  
-  /* 平滑的放大过渡效果 */
-  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
-  position: relative !important;
-  z-index: 1 !important;
-  min-width: 0 !important;
-  overflow: hidden !important;
+/* 强制AI总结框及特殊框透明 */
+div.c-op-pc-container, div.c-op-pc-container *, div.c-pc-result {
+  background: transparent !important;
+  color: #333 !important;
+  border: none !important;
 }
 
-/* 鼠标悬停：卡片轻微上浮放大，边框变亮，产生玻璃拟态浮起感 */
+/* ================= 3. 核心卡片样式 ================= */
+div.c-container, div.result, div.result-op, div.c-card {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important; 
+  border-radius: 12px !important;
+  width: 100% !important; 
+  height: auto !important;
+  padding: 16px 20px !important; /* 统一且紧凑的内边距 */
+  box-sizing: border-box !important;
+  
+  /* 平滑过渡 */
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+  position: relative !important;
+  z-index: 1 !important;
+  overflow: visible !important;
+}
+
+/* 鼠标悬停效果 */
 div.c-container:hover, div.result:hover, div.result-op:hover, div.c-card:hover {
   transform: scale(1.03) !important;
   z-index: 10 !important;
@@ -81,30 +62,86 @@ div.c-container:hover, div.result:hover, div.result-op:hover, div.c-card:hover {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* ================= 4. 文字排版与图片自适应 ================= */
+/* ================= 4. 排版布局与图片修复 ================= */
 
-/* 允许长标题换行，防止文字溢出 */
-div.c-title, div.c-title a, h3, h4 {
+/* 1. 卡片整体设为水平布局，强制“左图右文” */
+.c-span9, .c-span21, .c-span19, .c-span4 {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 16px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 2. 右侧文字区设为垂直布局 */
+.c-span19, .c-span4, div.new-pmd.c-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important; /* 控制标题与下方文字的间距 */
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 3. 图片强制尺寸 */
+.c-img, .c-img-s, .c-img-w, .c-img-container {
+  flex-shrink: 0 !important;
+  width: 130px !important;
+  max-height: 85px !important;
+  object-fit: cover !important;
+  border-radius: 6px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+/* 4. 标题完美换行（紧贴顶部，绝不重叠） */
+div.c-title, 
+div.c-title a, 
+.cosc-title-slot, 
+.cos-line-clamp-1, 
+.c-title-new, 
+h3.t, 
+h3.c-title {
+  display: block !important;
+  width: 100% !important;
+  
+  /* 强制打破单行限制并换行 */
   white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  
   overflow: visible !important;
   text-overflow: unset !important;
   line-height: 1.5 !important;
-  word-break: break-word !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  /* 关键：解除百度对标题区域的固定高度限制，允许它随文字增多而撑高 */
+  height: auto !important;
 }
 
-/* 卡片内的图片自适应宽度 */
-.c-img, div.c-img-container {
-  max-width: 100% !important;
-  height: auto !important;
-  margin-top: 10px !important;
-  border-radius: 6px !important;
+/* 5. 描述与日期排版（防止被绝对定位强行覆盖） */
+.c-abstract, .c-color-gray, span.c-color-gray, .c-gray, .c-showurl {
+  display: block !important;
+  width: 100% !important;
+  line-height: 1.5 !important;
+  word-break: break-word !important;
+  color: #555 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  /* 关键：强制禁止绝对定位，让它乖乖排在标题下方，而不是飘到上面去遮挡标题 */
+  position: static !important;
 }
 
 /* ================= 5. 底部相关搜索居中 ================= */
-
-/* 强制相关搜索区域跨越整个网格宽度，并隐藏左侧标题 */
 #rs, .new-pmd .opr-toplist1-table {
-  grid-column: 1 / -1 !important; /* 让容器占满两列宽度 */
+  grid-column: 1 / -1 !important;
   width: 100% !important;
   display: flex !important;
   flex-wrap: wrap !important;
@@ -114,16 +151,15 @@ div.c-title, div.c-title a, h3, h4 {
   padding: 0 !important;
 }
 
-/* 隐藏“相关搜索”文字标题，保持页面纯净 */
 #rs h3, .new-pmd .opr-toplist1-table h3 {
   display: none !important;
 }
 
-/* 底部搜索小标签保持极简胶囊风格 */
 #rs a, .new-pmd .opr-toplist1-table a {
   background: rgba(255, 255, 255, 0.2) !important;
   border-radius: 20px !important;
   padding: 8px 20px !important;
   color: #333 !important;
   backdrop-filter: blur(4px) !important;
+  display: block !important;
 }
