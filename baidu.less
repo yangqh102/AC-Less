@@ -1,9 +1,12 @@
 /* ================= 1. 全局容器与双列布局 ================= */
 body {
-  /* 隐藏顶部导航栏和搜索框区域，保持页面纯净 */
-  #head, .s-hotsearch-wrapper { display: none !important; }
+  /* 隐藏多余的热搜和侧边推荐，保持页面纯净 */
+  .s-hotsearch-wrapper, .s-top-nav, .s-top-more, .opr-recommends-merge-wrapper { 
+    display: none !important; 
+  }
 }
 
+/* 核心双列搜索结果布局 */
 #content_left {
   margin: 0 auto !important;
   max-width: 1100px !important;
@@ -15,29 +18,29 @@ body {
   padding: 30px 0 !important;
 }
 
-/* 彻底隐藏右侧栏和悬浮元素 */
+/* 彻底隐藏右侧栏、底部推荐及悬浮元素 */
 #content_right, #content_bottom, .side-nav, .opr-recommends-merge-content {
   display: none !important;
 }
 
-/* ================= 2. 深度透明化（核弹级去色，融合二次元背景） ================= */
+/* ================= 2. 深度透明化（融合二次元背景） ================= */
 
-/* 针对所有卡片基础容器 */
+/* 针对所有卡片基础容器去除背景色 */
 div.c-container, div.result, div.c-card, div.c-wrapper, div.new-pmd, div.result-op {
   background: transparent !important;
   background-color: transparent !important;
   backdrop-filter: none !important;
 }
 
-/* 强制百度AI总结框透明（解决截图右侧的白底问题） */
+/* 强制百度AI总结框及特殊结果框透明 */
 div.c-op-pc-container, div.c-op-pc-container *, div.c-pc-result {
   background: transparent !important;
   background-color: transparent !important;
-  color: #333 !important; /* 确保文字依然清晰可读 */
+  color: #333 !important;
   border: none !important;
 }
 
-/* 针对百度内部的“大家还在搜”等小块推荐框强制透明 */
+/* 强制内部小块（如“大家还在搜”）完全透明 */
 .opr-recommends-merge-panel, .opr-recommends-merge-panel *,
 .c-gap-inner, .c-gap-inner *, .c-blocka, .c-blocka * {
   background: transparent !important;
@@ -53,16 +56,16 @@ div.c-op-pc-container, div.c-op-pc-container *, div.c-pc-result {
   box-shadow: none !important;
 }
 
-/* ================= 3. 核心卡片样式：无变色，仅边框与放大 ================= */
+/* ================= 3. 核心卡片样式：无边框变色，仅放大与半透明边框 ================= */
 div.c-container, div.result, div.result-op, div.c-card {
-  /* 极细的半透明白色边框，与背景图完美融合 */
+  /* 极细的半透明白色边框，完美融入浅色/动漫背景 */
   border: 1px solid rgba(255, 255, 255, 0.5) !important; 
   border-radius: 12px !important;
   max-width: 100% !important;
   padding: 18px 20px !important;
   box-sizing: border-box !important;
   
-  /* 仅保留放大和平移过渡，去掉所有关于变色的过渡 */
+  /* 平滑的放大过渡效果 */
   transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
   position: relative !important;
   z-index: 1 !important;
@@ -70,15 +73,17 @@ div.c-container, div.result, div.result-op, div.c-card {
   overflow: hidden !important;
 }
 
-/* 鼠标悬停：只放大，绝对不改变背景色 */
+/* 鼠标悬停：卡片轻微上浮放大，边框变亮，产生玻璃拟态浮起感 */
 div.c-container:hover, div.result:hover, div.result-op:hover, div.c-card:hover {
   transform: scale(1.03) !important;
   z-index: 10 !important;
-  border-color: rgba(255, 255, 255, 0.9) !important; /* 悬停时仅让边框稍微变亮 */
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important; /* 轻微阴影增加浮起感 */
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* ================= 4. 文字排版：长标题换行 + 图片自适应 ================= */
+/* ================= 4. 文字排版与图片自适应 ================= */
+
+/* 允许长标题换行，防止文字溢出 */
 div.c-title, div.c-title a, h3, h4 {
   white-space: normal !important;
   overflow: visible !important;
@@ -87,7 +92,7 @@ div.c-title, div.c-title a, h3, h4 {
   word-break: break-word !important;
 }
 
-/* 让卡片内的图片适应宽度，防止撑爆卡片 */
+/* 卡片内的图片自适应宽度 */
 .c-img, div.c-img-container {
   max-width: 100% !important;
   height: auto !important;
@@ -95,20 +100,30 @@ div.c-title, div.c-title a, h3, h4 {
   border-radius: 6px !important;
 }
 
-/* ================= 5. 底部相关搜索强制居中 ================= */
+/* ================= 5. 底部相关搜索居中 ================= */
+
+/* 强制相关搜索区域跨越整个网格宽度，并隐藏左侧标题 */
 #rs, .new-pmd .opr-toplist1-table {
+  grid-column: 1 / -1 !important; /* 让容器占满两列宽度 */
   width: 100% !important;
   display: flex !important;
   flex-wrap: wrap !important;
   justify-content: center !important;
   gap: 12px !important;
   margin: 20px auto 0 auto !important;
+  padding: 0 !important;
 }
-/* 相关搜索的小标签保持极简风格 */
+
+/* 隐藏“相关搜索”文字标题，保持页面纯净 */
+#rs h3, .new-pmd .opr-toplist1-table h3 {
+  display: none !important;
+}
+
+/* 底部搜索小标签保持极简胶囊风格 */
 #rs a, .new-pmd .opr-toplist1-table a {
   background: rgba(255, 255, 255, 0.2) !important;
   border-radius: 20px !important;
-  padding: 6px 16px !important;
+  padding: 8px 20px !important;
   color: #333 !important;
   backdrop-filter: blur(4px) !important;
 }
